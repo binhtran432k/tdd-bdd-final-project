@@ -129,7 +129,7 @@ class TestProductModel(unittest.TestCase):
             "available": "True",
             "category": "CLOTHS",
         })
-    
+
     def test_deserialize_a_product_with_invalid_category_value(self):
         """It should Deserialize a product with invalid available"""
         product = ProductFactory()
