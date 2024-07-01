@@ -197,6 +197,27 @@ class TestProductRoutes(TestCase):
         data = response.get_json()
         self.assertIn("was not found", data["message"])
 
+    def test_delete_product(self):
+        """It should Delete an existing Product"""
+        products = self._create_products(5)
+        # TODO: uncomment when list all is ready
+        # product_count = self.get_product_count()
+        product = products[0]
+        response = self.client.delete(f"{BASE_URL}/{product.id}")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(len(response.data), 0)
+        response = self.client.get(f"{BASE_URL}/{product.id}")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        # TODO: uncomment when list all is ready
+        # self.assertEqual(self.get_product_count(), product_count - 1)
+
+    def test_delete_product_not_found(self):
+        """It should not Delete a Product that is not found"""
+        response = self.client.delete(f"{BASE_URL}/0", json={})
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        data = response.get_json()
+        self.assertIn("was not found", data["message"])
+
     ######################################################################
     # Utility functions
     ######################################################################
